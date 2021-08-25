@@ -27,7 +27,9 @@ class Search:
                                 rs[path] = [(line, line_count)]
                             else:
                                 rs[path].append((line, line_count))
-        except:
+        except UnicodeDecodeError:
+            return {}
+        except PermissionError:
             return {}
         return rs
 
@@ -91,7 +93,8 @@ def print_results(keywords: list) -> None:
 
 def find_search_terms(keywords: str, order_matters: bool = False) -> list:
     """
-    Finds open and close quotation marks and joins them as a single search term/keyword.
+    Finds open and close quotation marks and joins them as a single 
+    search term/keyword.
     """
     if order_matters:
         keywords = keywords.split()
