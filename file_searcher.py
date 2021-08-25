@@ -1,4 +1,7 @@
-import os, sys, time, re
+import os
+import sys
+import time
+import re
 # Higher recursion limit to loop through whole drive
 sys.setrecursionlimit(1500)
 
