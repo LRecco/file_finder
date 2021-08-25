@@ -1,7 +1,7 @@
-import os
 import sys
 import time
 import re
+from os import walk, path, getcwd
 # Higher recursion limit to loop through whole drive
 sys.setrecursionlimit(1500)
 
@@ -35,12 +35,12 @@ class Search:
 
     def find(self) -> list[dict]:
         rs: list[dict] = []
-        for path, dirs, files in os.walk(os.getcwd()):
+        for root, dirs, files in walk(getcwd()):
             for file in files:
-                if "$" in file or "$" in path:
+                if "$" in file or "$" in root:
                     continue
                 if file.endswith(".txt"):
-                    file_path = os.path.join(path, file)
+                    file_path = path.join(root, file)
                     # Dictionary of matches
                     matches = self.search_file(file_path)
                     if len(matches) > 0:
