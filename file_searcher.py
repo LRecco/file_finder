@@ -1,5 +1,7 @@
 import os, sys, time, re
-sys.setrecursionlimit(1500) # Higher recursion limit to loop through whole drive
+# Higher recursion limit to loop through whole drive
+sys.setrecursionlimit(1500)
+
 
 class Search:
     keywords: list[str]
@@ -41,7 +43,8 @@ class Search:
                         for dir, values in matches.items():
                             print("Directory:", dir)
                             for value in values:
-                                print("    Line #: {:<5d} - {}".format(value[1], value[0]))
+                                print("    Line #: {:<5d} - {}".format(
+                                    value[1], value[0]))
                             print()
         return rs
 
@@ -53,6 +56,7 @@ def sum_results(rs: dict) -> int:
             total += len(r)
     return total
 
+
 def parse_arguments() -> list[str]:
     """
     Parse arguments passed to this script. 
@@ -60,6 +64,7 @@ def parse_arguments() -> list[str]:
     """
     args = [arg for arg in sys.argv[1:]]
     return args
+
 
 def join_keywords(keywords: list[str]) -> str:
     keywords_string = ""
@@ -72,11 +77,14 @@ def join_keywords(keywords: list[str]) -> str:
             keywords_string += ", "
     return keywords_string
 
+
 def print_results(keywords: list) -> None:
     s = Search(keywords)
     rs = s.find()
     keywords_string = join_keywords(keywords)
-    print("Found {} results in {} files with the keywords: {}".format(sum_results(rs), len(rs), keywords_string))
+    print("Found {} results in {} files with the keywords: {}".format(
+        sum_results(rs), len(rs), keywords_string))
+
 
 def find_search_terms(keywords: str, order_matters: bool = False) -> list:
     """
@@ -93,11 +101,13 @@ def find_search_terms(keywords: str, order_matters: bool = False) -> list:
                         break
                 if end - start <= 1:
                     continue
-                keywords[start] = " ".join(keywords[start:end + 1]).replace('"', "").replace("'", "")
+                keywords[start] = " ".join(keywords[start:end + 1]).replace(
+                    '"', "").replace("'", "")
                 for i in range(start + 1, end + 1, 1):
                     keywords.pop(start + 1)
             elif len(keyword.strip()) > 0:
-                keywords[keywords.index(keyword)] = keyword.replace('"', "").replace("'", "")
+                keywords[keywords.index(keyword)] = keyword.replace(
+                    '"', "").replace("'", "")
         return keywords
     else:
         matches = re.findall(r'"([a-zA-Z].*)"', keywords)
@@ -111,6 +121,7 @@ def find_search_terms(keywords: str, order_matters: bool = False) -> list:
                 keywords = keywords.replace(double_quote, "")
         results = keywords.split() + matches
         return results
+
 
 def main():
     """
@@ -126,7 +137,8 @@ def main():
         start_time = time.time()
         keywords = find_search_terms(keywords, False)
         print_results(keywords)
-    print("--- {:.4f} seconds of execution ---".format(time.time() - start_time))
+    print("--- {:.4f} seconds ---".format(time.time() - start_time))
+
 
 if __name__ == "__main__":
     main()
